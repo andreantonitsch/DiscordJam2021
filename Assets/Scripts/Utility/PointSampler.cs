@@ -16,14 +16,20 @@ public class PointSampler : MonoBehaviour
         } 
     }
 
+    public BaseParameters bp;
+
     public float Radius = 0.1f;
     public int Attempts = 30;
-    public Vector4 Domain;
-    
+
+    public void Start()
+    {
+        bp = BaseParameters.Instance;
+    }
 
     // Update is called once per frame
     public List<Vector2> SamplePoints()
     {
+        var Domain = bp.Domain;
 
         var sampler = new PoissonDiscSampler(Domain.y - Domain.x, Domain.w - Domain.z, Radius);
 
@@ -33,7 +39,6 @@ public class PointSampler : MonoBehaviour
         {
             l.Add(s + new Vector2(Domain.x, Domain.z));
         }
-
 
         return l;
     }

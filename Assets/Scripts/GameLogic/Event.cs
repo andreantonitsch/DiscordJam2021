@@ -13,7 +13,10 @@ public class Event
         SpawnTick,
         CorruptionDamage,
         StructuralDamage,
-        CorruptNode
+        CorruptNode,
+        UpdateDistanceFunction,
+        NodesSpawned
+
     }
 
     public Event(EventType type)

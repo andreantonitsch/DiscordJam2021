@@ -41,8 +41,7 @@ public class DiffusionReaction2DFrag : MonoBehaviour
 
     public SimulationModes SelectedMode;
 
-    public CameraDraw cam_script;
-    private Material visualization_mat;
+    public Material visualization_mat;
     public Material SimulationShader;
     public Material DrawShader;
     public Material ClearShader;
@@ -102,7 +101,7 @@ public class DiffusionReaction2DFrag : MonoBehaviour
         SelectedMode = (SimulationModes)value;
     }
 
-    private RenderTexture InitializeTexture()
+    public RenderTexture InitializeTexture()
     {
         var tex = new RenderTexture(_COLS, _ROWS, 0, RenderTextureFormat.ARGBFloat);
         tex.wrapMode = TextureWrapMode.Clamp;
@@ -225,7 +224,6 @@ public class DiffusionReaction2DFrag : MonoBehaviour
     void Start()
     {
 
-        visualization_mat = cam_script.renderMaterial;
 
         SetProperties();
 
@@ -233,7 +231,11 @@ public class DiffusionReaction2DFrag : MonoBehaviour
         _qBuffer1 = InitializeTexture();
 
         if(!empty_canvas)
-            AreaInitializer(random);
+            if(random)
+                AreaInitializer(random);
+            else
+                AreaInitializer();
+
 
         visualization_mat.SetTexture("_Q", _qBuffer0);
     }
@@ -247,7 +249,8 @@ public class DiffusionReaction2DFrag : MonoBehaviour
             SwapBuffers();
         
     }
-    private void Step()
+
+    public void Step()
     {
         for (int i = 0; i < IterationsPerFrame; i++)
         {
@@ -261,9 +264,11 @@ public class DiffusionReaction2DFrag : MonoBehaviour
     }
 
     // Update is called once per frame
-    void Update()
-    {
-        Step();
-    }
+    //void Update()
+    //{
+        
+    //    Step();
+    //    //MouseDraw();
+    //}
 
 }

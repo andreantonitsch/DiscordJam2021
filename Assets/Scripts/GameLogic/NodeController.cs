@@ -58,6 +58,7 @@ public class NodeController : EventListener
         Nodes.Add(RootNode);
         IDs.Add(0, RootNode);
         CorruptNodes.Add(RootNode);
+
         int ids = 1;
         for (int i = 1; i < positions.Count; i++)
         {
@@ -76,6 +77,7 @@ public class NodeController : EventListener
             dist += 0.01f;
         } while (!CheckNeighbors());
 
+        eh.Push(new Event(Event.EventType.NodesSpawned));
     }
 
     public bool CheckNeighbors()

@@ -65,6 +65,8 @@ public class Node : EventListener
         }
 
         Corruption += corruption;
+        Corruption = Mathf.Min(bp.MaxCorruptionMult * CurrentStats.CorruptionHP, Corruption);
+
 
         if(Corruption > BaseStats.CorruptionHP && parent != null && Free)
         {

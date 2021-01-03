@@ -57,21 +57,21 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Floats:
     - _BumpScale: 1
-    - _COLS: 512
+    - _COLS: 1024
     - _Cutoff: 0.5
     - _DELTATIME: 0.5
     - _DetailNormalMapScale: 1
     - _DstBlend: 0
-    - _F: 0.055
+    - _F: 0.0416
     - _GlossMapScale: 1
     - _Glossiness: 0.5
     - _GlossyReflections: 1
-    - _K: 0.062
+    - _K: 0.0625
     - _Metallic: 0
     - _Mode: 0
     - _OcclusionStrength: 1
     - _Parallax: 0.02
-    - _ROWS: 512
+    - _ROWS: 1024
     - _SmoothnessTextureChannel: 0
     - _SpecularHighlights: 1
     - _SrcBlend: 1
