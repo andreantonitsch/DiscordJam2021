@@ -142,6 +142,7 @@ public class DiffusionReaction2DFrag : MonoBehaviour
                     }
                     else
                     {
+                        //Debug.Log("Lol");
                         data[i] = SeedValues.x;
                         data[i + 1] = SeedValues.y;
                         data[i + 2] = 0;
@@ -239,6 +240,13 @@ public class DiffusionReaction2DFrag : MonoBehaviour
 
         visualization_mat.SetTexture("_Q", _qBuffer0);
     }
+
+    public void DrawCenter()
+    {
+        Shader.SetGlobalVector("_MousePosition", new Vector2(0.5f,0.5f));
+        MouseDraw();
+    }
+
     public void MouseDraw()
     {
 
@@ -266,9 +274,9 @@ public class DiffusionReaction2DFrag : MonoBehaviour
     // Update is called once per frame
     //void Update()
     //{
-        
-    //    Step();
-    //    //MouseDraw();
+
+    //    //Step();
+    //    MouseDraw();
     //}
 
 }

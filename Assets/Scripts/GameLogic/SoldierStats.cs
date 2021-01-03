@@ -5,8 +5,6 @@ using UnityEngine;
 public class SoldierStats
 {
 
-    public float FireRate;
-    public float Damage;
-    public float HP;
+
 
 }

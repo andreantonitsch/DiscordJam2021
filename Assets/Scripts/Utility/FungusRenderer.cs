@@ -7,7 +7,7 @@ public class FungusRenderer : EventListener
 
     #region Debug
     public Material debug_material;
-    bool DEBUG = true;
+    public bool DEBUG = false;
     #endregion
 
     public BaseParameters bp;
@@ -52,6 +52,8 @@ public class FungusRenderer : EventListener
             GenerateCorruptionDistanceFunction();
         else
             UpdateDistanceFunction();
+
+        diffusion_handler.SimulationShader.SetTexture("_InfluenceTex", distance_tex);
 
         if (DEBUG)
             debug_material.SetTexture("_MainTex", distance_tex);
@@ -136,6 +138,7 @@ public class FungusRenderer : EventListener
                 break;
             case Event.EventType.NodesSpawned:
                 GetDistanceFunction();
+                diffusion_handler.DrawCenter();
                 break;
             default:
                 break;

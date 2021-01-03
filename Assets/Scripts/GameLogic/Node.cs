@@ -9,13 +9,16 @@ public class Node : EventListener
     public bool DrawChildren = true;
     #endregion
 
+    public GameObject SoldierPrefab;
+
     public List<Node> Neighbors = new List<Node>();
 
     public Node Parent;
     public List<Node> Children;
 
-
+    public int SoldierSpawnTimer;
     public float Corruption;
+    public float Damage;
     public bool Free = true;
 
     public int PowerUpSlots;
@@ -37,6 +40,8 @@ public class Node : EventListener
         bp = BaseParameters.Instance;
         nc = NodeController.Instance;
         eh = EventHandler.Instance;
+
+
 
         eh.Sub(Event.EventType.CorruptionTick, this);
     }
@@ -82,8 +87,8 @@ public class Node : EventListener
         corruption_event.i_val1 = parent.ID;
         corruption_event.i_val2 = child.ID;
 
+        eh.Unsub(Event.EventType.SoldierSpawnTick, this);
         eh.Push(corruption_event);
-
     }
 
     public void FindNeighbors(float distance = 0.0f)
@@ -123,6 +128,32 @@ public class Node : EventListener
         return false;
     }
 
+    public void SpawnSoldier()
+    {
+        Vector3 soldier_pos = transform.position + new Vector3(bp.SoldierSpawnOffset.x * (Random.value - 0.5f), bp.SoldierSpawnOffset.y * (Random.value - 0.5f), 0.0f);
+
+        var s =  ObjectPool.Spawn(SoldierPrefab, soldier_pos, Quaternion.identity);
+        //var s = Instantiate(SoldierPrefab);
+        //s.transform.position = soldier_pos;
+        s.GetComponent<Soldier>().Init(CurrentStats);
+    }
+
+
+    public void SoldierTick()
+    {
+        SoldierSpawnTimer++;
+        if(SoldierSpawnTimer >= CurrentStats.SpawnRate)
+        {
+            SpawnSoldier();
+            SoldierSpawnTimer = 0;
+        }
+    }
+
+    public void TakeDamage(float Quantity)
+    {
+
+    }
+
     public override void Consume(Event e)
     {
         switch (e.Type)
@@ -130,12 +161,17 @@ public class Node : EventListener
             case Event.EventType.CorruptionTick:
                 AbsorbCorruption();
                 break;
+            case Event.EventType.SoldierSpawnTick:
+                SoldierTick();
+                break;            
+            case Event.EventType.StructuralDamage:
+                TakeDamage();
+                break;
             default:
                 break;
         }
 
     }
-
 
     void OnDrawGizmosSelected()
     {

@@ -7,6 +7,7 @@ public class NodeStats
 {
     public float CorruptingPower;
     public float CorruptionResistance;
+    public float DamageResistance;
     public float CorruptionHP;
     public float HP;
     public float SpawnRate;
@@ -20,6 +21,7 @@ public class NodeStats
 
         CorruptingPower = copy.CorruptingPower;
         CorruptionResistance = copy.CorruptionResistance;
+        DamageResistance = copy.DamageResistance;
         CorruptionHP = copy.CorruptionHP;
         HP = copy.HP;
         SpawnRate = copy.SpawnRate;

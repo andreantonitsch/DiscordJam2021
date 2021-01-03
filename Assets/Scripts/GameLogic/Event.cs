@@ -8,14 +8,15 @@ public class Event
     [System.Serializable]
     public enum EventType
     {
-        NodeTurn,
         CorruptionTick,
         SpawnTick,
-        CorruptionDamage,
         StructuralDamage,
         CorruptNode,
         UpdateDistanceFunction,
-        NodesSpawned
+        NodesSpawned,
+        SoldierSpawnTick,
+        SoldierActTick,
+        NodeDestroyed
 
     }
 

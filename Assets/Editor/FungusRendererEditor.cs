@@ -19,6 +19,11 @@ public class FungusRendererEditor : Editor
             script.GetDistanceFunction();
             script.debug_material.SetTexture("_MainTex", script.distance_tex);
         }
+        if (GUILayout.Button("Try Draw"))
+        {
+            script.diffusion_handler.DrawCenter();
+            //script.debug_material.SetTexture("_MainTex", script.distance_tex);
+        }
 
     }
 

@@ -173,13 +173,19 @@ MonoBehaviour:
   HPRange: {x: 100, y: 300}
   MaxCorruptionMult: 2
   CorruptionHPRange: {x: 100, y: 300}
-  CorruptingPowerRange: {x: 25, y: 50}
+  CorruptingPowerRange: {x: 20, y: 30}
   CorruptionResistanceRange: {x: 100, y: 120}
   AttackPowerRange: {x: 15, y: 30}
   SpawnStrengthRange: {x: 1, y: 3}
   SpawnRateRange: {x: 2, y: 50}
+  SoldierSpawnOffset: {x: 0.4, y: 0.4}
+  SoldierMoveSpeed: 0.05
+  SoldierShootRadius: 0.3
+  SoldierBaseScaling: 2
   NeighborDistance: 1.5
   CorruptionTick: 1
+  SoldierSpawnTick: 3
+  SoldierActTick: 0.05
 --- !u!1 &219916870
 GameObject:
   m_ObjectHideFlags: 0
@@ -278,7 +284,7 @@ SpriteShapeRenderer:
   m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
-  m_DynamicOccludee: 1
+  m_DynamicOccludee: 0
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
@@ -403,9 +409,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b59d507c176c472488931c4ef98ef209, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  SelectedMode: 3
+  SelectedMode: 0
   visualization_mat: {fileID: 2100000, guid: 1f2441ed286e71c49b1237613e476f05, type: 2}
-  SimulationShader: {fileID: 2100000, guid: d36e4def0aa092b45bd379de89915894, type: 2}
+  SimulationShader: {fileID: 2100000, guid: ee63c0a55264d5043983f86e064fe1cb, type: 2}
   DrawShader: {fileID: 2100000, guid: 21e11eafe00a50947b37b615616c08bf, type: 2}
   ClearShader: {fileID: 2100000, guid: 6b67bf1d29ca5854381f06f5e52850e5, type: 2}
   DiffusionRatio: {x: 1, y: 0.5}
@@ -414,7 +420,7 @@ MonoBehaviour:
   _DELTATIME: 0.5
   _ROWS: 1024
   _COLS: 1024
-  SeedValues: {x: 0, y: 1, z: 0}
+  SeedValues: {x: 0, y: 1, z: 1}
   BGValues: {x: 1, y: 0, z: 0}
   radius: 5
   random: 0
@@ -433,6 +439,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   debug_material: {fileID: 2100000, guid: 6ec2cb74c5f357d44ad7fc0b0512ed6a, type: 2}
+  DEBUG: 0
   bp: {fileID: 0}
   nc: {fileID: 0}
   eh: {fileID: 0}
@@ -574,6 +581,7 @@ MonoBehaviour:
   FreeCityMaterial: {fileID: 2100000, guid: b9bf811dac737e44a8a1a7f098f5a641, type: 2}
   CorruptCityMaterial: {fileID: 2100000, guid: f65b08f392da85b4b98cdff6699160e1, type: 2}
   Nodes: []
+  null_parents: []
   CorruptNodes: []
   NodePrefab: {fileID: 8017609675238392294, guid: 9b0fd4aa12b381a4f9f4140bcfc34984, type: 3}
   sampler: {fileID: 1033319260}
@@ -610,7 +618,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!64 &971868673
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -796,6 +804,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   TimeScale: 1
   CorruptionTimer: 0
+  SoldierSpawnTimer: 0
+  SoldierActTimer: 0
 --- !u!4 &1459993943
 Transform:
   m_ObjectHideFlags: 0

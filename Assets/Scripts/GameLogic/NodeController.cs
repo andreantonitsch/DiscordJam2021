@@ -25,6 +25,8 @@ public class NodeController : EventListener
     public Dictionary<int, Node> IDs;
     public List<Node> Nodes;
 
+    public List<Node> null_parents;
+
     public List<Node> CorruptNodes;
 
     public GameObject NodePrefab;
@@ -39,7 +41,7 @@ public class NodeController : EventListener
         bp = BaseParameters.Instance;
         IDs = new Dictionary<int, Node>();
         Nodes = new List<Node>();
-
+        null_parents = new List<Node>();
         sampler = PointSampler.Instance;
         eh = EventHandler.Instance;
 
@@ -58,6 +60,7 @@ public class NodeController : EventListener
         Nodes.Add(RootNode);
         IDs.Add(0, RootNode);
         CorruptNodes.Add(RootNode);
+        null_parents.Add(RootNode);
 
         int ids = 1;
         for (int i = 1; i < positions.Count; i++)
@@ -96,6 +99,7 @@ public class NodeController : EventListener
 
         base_stat_block.CorruptingPower = Random.Range(bp.CorruptingPowerRange.x, bp.CorruptingPowerRange.y);
         base_stat_block.CorruptionResistance = Random.Range(bp.CorruptionResistanceRange.x, bp.CorruptionResistanceRange.y);
+        base_stat_block.DamageResistance = Random.Range(bp.DamageResistanceRange.x, bp.DamageResistanceRange.y);
 
 
         base_stat_block.HP = Random.Range(bp.HPRange.x, bp.HPRange.y);
@@ -130,11 +134,13 @@ public class NodeController : EventListener
 
         n.Free = !Corrupt;
 
-        if(Corrupt)
+        if (Corrupt)
             n.GetComponent<SpriteRenderer>().material = CorruptCityMaterial;
         else
+        {
+            eh.Sub(Event.EventType.SoldierSpawnTick, n);
             n.GetComponent<SpriteRenderer>().material = FreeCityMaterial;
-
+        }
 
         return n;
     }
