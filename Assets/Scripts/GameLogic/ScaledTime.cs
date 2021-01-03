@@ -12,8 +12,4 @@ public static class ScaledTime
             return Time.deltaTime * TimeScale;
         } 
     }
-
-
-
-
 }

@@ -46,6 +46,7 @@ public class NodeController : EventListener
         eh = EventHandler.Instance;
 
         eh.Sub(Event.EventType.CorruptNode, this);
+        eh.Sub(Event.EventType.NodeDestroyed, this);
     }
 
 
@@ -56,6 +57,7 @@ public class NodeController : EventListener
 
         // Spawn Root Mycelium Node
         RootNode = CreateNode(positions[0], true);
+        eh.Sub(Event.EventType.NodeAttackTick, RootNode);
         RootNode.ID = 0;
         Nodes.Add(RootNode);
         IDs.Add(0, RootNode);
@@ -96,19 +98,7 @@ public class NodeController : EventListener
     public void FillNode(Node n, Vector2 position, bool Corrupt = false)
     {
         var base_stat_block = new NodeStats();
-
-        base_stat_block.CorruptingPower = Random.Range(bp.CorruptingPowerRange.x, bp.CorruptingPowerRange.y);
-        base_stat_block.CorruptionResistance = Random.Range(bp.CorruptionResistanceRange.x, bp.CorruptionResistanceRange.y);
-        base_stat_block.DamageResistance = Random.Range(bp.DamageResistanceRange.x, bp.DamageResistanceRange.y);
-
-
-        base_stat_block.HP = Random.Range(bp.HPRange.x, bp.HPRange.y);
-        base_stat_block.SpawnRate = Random.Range(bp.SpawnRateRange.x, bp.SpawnRateRange.y);
-        base_stat_block.SpawnStrength = Random.Range(bp.SpawnStrengthRange.x, bp.SpawnStrengthRange.y);
-        base_stat_block.AttackPower = Random.Range(bp.AttackPowerRange.x, bp.AttackPowerRange.y);
-        base_stat_block.CorruptionHP = Random.Range(bp.CorruptionHPRange.x, bp.CorruptionHPRange.y);
-
-
+        base_stat_block.Init();
         n.BaseStats = base_stat_block;
 
         n.transform.position = new Vector3(position.x, position.y, n.transform.position.z);
@@ -122,6 +112,11 @@ public class NodeController : EventListener
         }
 
         n.UpdateStats();
+
+    }
+
+    public void UpdatePowerUps()
+    {
 
     }
 
@@ -146,6 +141,28 @@ public class NodeController : EventListener
     }
 
 
+    public void CleanupNode(Node destroyed_node)
+    {
+        foreach (var n in destroyed_node.Children)
+        {
+            n.Parent = null;
+            null_parents.Add(n);
+
+        }
+        destroyed_node.Parent.Neighbors.Remove(destroyed_node);
+
+        IDs.Remove(destroyed_node.ID);
+        Nodes.Remove(destroyed_node);
+
+        null_parents.Remove(destroyed_node);
+
+        CorruptNodes.Remove(destroyed_node);
+
+
+         Destroy(destroyed_node.gameObject);
+
+    }
+
     public void CorruptNode(Node parent, Node child)
     {
         child.GetComponent<SpriteRenderer>().material = CorruptCityMaterial;
@@ -154,6 +171,7 @@ public class NodeController : EventListener
         child.Free = false;
 
         CorruptNodes.Add(child);
+
     }
 
     public override void Consume(Event e)
@@ -166,6 +184,13 @@ public class NodeController : EventListener
                 IDs.TryGetValue(e.i_val2, out Node child);
 
                 CorruptNode(parent, child);
+                break; 
+            case Event.EventType.NodeDestroyed:
+                IDs.TryGetValue(e.i_val1, out Node destroyed_node);
+                CleanupNode(destroyed_node);
+                break;
+            case Event.EventType.UpdatePowerUps:
+                UpdatePowerUps();
                 break;
             default:
                 break;

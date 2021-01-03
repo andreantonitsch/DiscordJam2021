@@ -10,13 +10,15 @@ public class Event
     {
         CorruptionTick,
         SpawnTick,
-        StructuralDamage,
+        Damage,
         CorruptNode,
         UpdateDistanceFunction,
         NodesSpawned,
         SoldierSpawnTick,
         SoldierActTick,
-        NodeDestroyed
+        NodeDestroyed,
+        NodeAttackTick,
+        UpdatePowerUps
 
     }
 

@@ -27,6 +27,7 @@ public class GameController : MonoBehaviour
     public float CorruptionTimer = 0.0f;
     public float SoldierSpawnTimer = 0.0f;
     public float SoldierActTimer = 0.0f;
+    public float NodeAttackTimer = 0.0f;
 
 
 
@@ -48,6 +49,7 @@ public class GameController : MonoBehaviour
         CorruptionTimer += ScaledTime.deltaTime;
         SoldierSpawnTimer += ScaledTime.deltaTime;
         SoldierActTimer += ScaledTime.deltaTime;
+        NodeAttackTimer += ScaledTime.deltaTime;
         
         if(CorruptionTimer > bp.CorruptionTick)
         {
@@ -69,6 +71,13 @@ public class GameController : MonoBehaviour
             eh.Push(new Event(Event.EventType.SoldierActTick));
             SoldierActTimer = 0.0f;
         }
+
+        if (NodeAttackTimer > bp.NodeAttackTick)
+        {
+            eh.Push(new Event(Event.EventType.NodeAttackTick));
+            NodeAttackTimer = 0.0f;
+        }
+
 
     }
 

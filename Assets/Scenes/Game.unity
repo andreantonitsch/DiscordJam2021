@@ -167,7 +167,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Domain: {x: -4.5, y: 4.5, z: -4.5, w: 4.5}
-  CorruptionResistanceScaling: 100
   TickTime: 1
   NodeSlotsRange: {x: 1, y: 3}
   HPRange: {x: 100, y: 300}
@@ -175,17 +174,25 @@ MonoBehaviour:
   CorruptionHPRange: {x: 100, y: 300}
   CorruptingPowerRange: {x: 20, y: 30}
   CorruptionResistanceRange: {x: 100, y: 120}
+  DamageResistanceRange: {x: 10, y: 30}
   AttackPowerRange: {x: 15, y: 30}
+  AttackRateRange: {x: 3, y: 5}
+  AttackRangeRange: {x: 1, y: 1.5}
+  EnergyRange: {x: 100, y: 200}
   SpawnStrengthRange: {x: 1, y: 3}
   SpawnRateRange: {x: 2, y: 50}
   SoldierSpawnOffset: {x: 0.4, y: 0.4}
   SoldierMoveSpeed: 0.05
-  SoldierShootRadius: 0.3
-  SoldierBaseScaling: 2
+  SoldierShootRadius: 0.5
+  CorruptionResistanceScaling: 100
+  DamageResistanceScaling: 100
+  EnergyScaling: 100
+  SoldierBaseScaling: 100
   NeighborDistance: 1.5
   CorruptionTick: 1
   SoldierSpawnTick: 3
   SoldierActTick: 0.05
+  NodeAttackTick: 0.1
 --- !u!1 &219916870
 GameObject:
   m_ObjectHideFlags: 0
@@ -806,6 +813,7 @@ MonoBehaviour:
   CorruptionTimer: 0
   SoldierSpawnTimer: 0
   SoldierActTimer: 0
+  NodeAttackTimer: 0
 --- !u!4 &1459993943
 Transform:
   m_ObjectHideFlags: 0

@@ -11,6 +11,9 @@ public class BulletMover : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (target == null)
+            ObjectPool.Despawn(this.gameObject);
+
         if (Vector3.SqrMagnitude(target.position - transform.position) < MinDistance)
             ObjectPool.Despawn(this.gameObject);
 

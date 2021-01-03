@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class Soldier : EventListener
 {
+    public static List<Soldier> ActiveSoldiers = new List<Soldier>();
     public GameObject bullet;
 
     public NodeController nc;
@@ -29,14 +30,17 @@ public class Soldier : EventListener
         bp = BaseParameters.Instance;
         eh = EventHandler.Instance;
 
-        FireRate = BaseFireRate;
-        Damage = BaseDamage;
-        HP = BaseHP;
-
         float total = nc.Nodes.Count;
         float free_cities = total - nc.CorruptNodes.Count;
 
-        float strength = node_stats.SpawnStrength * ( bp.SoldierBaseScaling * total/free_cities);
+        float scale = 1 - (free_cities / total );
+        float strength = node_stats.SpawnStrength * bp.SoldierBaseScaling * scale ;
+
+        FireRate = BaseFireRate;
+        Damage = BaseDamage * strength;
+        HP = BaseHP * strength;
+
+        ActiveSoldiers.Add(this);
         eh.Sub(Event.EventType.SoldierActTick, this);
 
         SetTarget();
@@ -45,12 +49,13 @@ public class Soldier : EventListener
     public void OnDisable()
     {
         eh.Unsub(Event.EventType.SoldierActTick, this);
+        ActiveSoldiers.Remove(this);
     }
 
 
     public void Shoot()
     {
-        var e = new Event(Event.EventType.StructuralDamage);
+        var e = new Event(Event.EventType.Damage);
         e.f_val1 = Damage;
         TargetNode.Consume(e);
 
@@ -99,12 +104,22 @@ public class Soldier : EventListener
         Move(target_dist);
     }
 
+    public void TakeDamage(float quantity)
+    {
+        HP -= quantity;
+        if (HP < 0)
+            ObjectPool.Despawn(this.gameObject);
+    }
+
     public override void Consume(Event e)
     {
         switch(e.Type)
         {
             case Event.EventType.SoldierActTick:
                 Act();
+                break;
+            case Event.EventType.Damage:
+                TakeDamage(e.f_val1);
                 break;
             default:
                 break;

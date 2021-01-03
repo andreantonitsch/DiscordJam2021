@@ -10,7 +10,7 @@ public class Node : EventListener
     #endregion
 
     public GameObject SoldierPrefab;
-
+    public GameObject NodeBullletPrefab;
     public List<Node> Neighbors = new List<Node>();
 
     public Node Parent;
@@ -20,6 +20,8 @@ public class Node : EventListener
     public float Corruption;
     public float Damage;
     public bool Free = true;
+
+    public Soldier ShootTarget;
 
     public int PowerUpSlots;
     public List<PowerUp> OwnPowerUps = new List<PowerUp>();
@@ -31,6 +33,9 @@ public class Node : EventListener
     public EventHandler eh;
     public BaseParameters bp;
     public NodeController nc;
+
+
+
 
     public int ID;
 
@@ -73,7 +78,7 @@ public class Node : EventListener
         Corruption = Mathf.Min(bp.MaxCorruptionMult * CurrentStats.CorruptionHP, Corruption);
 
 
-        if(Corruption > BaseStats.CorruptionHP && parent != null && Free)
+        if(Corruption > CurrentStats.CorruptionHP && parent != null && Free)
         {
             Free = false;
             CorruptionEvent(parent, this);
@@ -88,6 +93,7 @@ public class Node : EventListener
         corruption_event.i_val2 = child.ID;
 
         eh.Unsub(Event.EventType.SoldierSpawnTick, this);
+        eh.Sub(Event.EventType.NodeAttackTick, this);
         eh.Push(corruption_event);
     }
 
@@ -152,8 +158,70 @@ public class Node : EventListener
     public void TakeDamage(float Quantity)
     {
 
+        var base_resist = bp.DamageResistanceScaling;
+        Damage += Quantity * (base_resist / (base_resist + CurrentStats.DamageResistance));
+        if (Damage > CurrentStats.HP)
+        {
+            NodeDestroyed();
+        }
+
+    }
+    public void NodeDestroyed()
+    {
+        var e = new Event(Event.EventType.NodeDestroyed);
+        e.i_val1 = ID;
+        eh.Unsub(Event.EventType.CorruptionTick, this);
+        eh.Unsub(Event.EventType.NodeAttackTick, this);
+
+        eh.Push(e);
     }
 
+    public void AcquireTarget()
+    {
+        if (!(ShootTarget == null) && !ShootTarget.gameObject.activeSelf)
+        {
+            ShootTarget = null;
+            return;
+        }
+
+        var p = transform.position;
+        var x = p.x;
+        var y = p.y;
+        var v = new Vector2(x, y);
+
+        foreach (var item in Soldier.ActiveSoldiers)
+        {
+            var p2 = item.transform.position;
+            var x2 = p2.x;
+            var y2 = p2.y;
+            var v2 = new Vector2(x2, y2);
+            var d = Vector2.Distance(p, p2);
+            if (Vector2.Distance(p, p2) < CurrentStats.AttackRange)
+            {
+                ShootTarget = item;
+                break;
+            }
+        }
+    }
+
+    public void Shoot()
+    {
+        AcquireTarget();
+        
+        if((ShootTarget != null && ShootTarget.isActiveAndEnabled)){
+            var e = new Event(Event.EventType.Damage);
+            e.f_val1 = CurrentStats.AttackPower;
+            ShootTarget.Consume(e);
+
+            var b = ObjectPool.Spawn(NodeBullletPrefab, transform.position, Quaternion.identity).GetComponent<BulletMover>();
+            b.target = ShootTarget.transform;
+
+        }
+
+    }
+
+    
+    
     public override void Consume(Event e)
     {
         switch (e.Type)
@@ -164,8 +232,12 @@ public class Node : EventListener
             case Event.EventType.SoldierSpawnTick:
                 SoldierTick();
                 break;            
-            case Event.EventType.StructuralDamage:
-                TakeDamage();
+            case Event.EventType.Damage:
+                TakeDamage(e.f_val1);
+                break;            
+            case Event.EventType.NodeAttackTick:
+                if(!Free)
+                    Shoot();
                 break;
             default:
                 break;
