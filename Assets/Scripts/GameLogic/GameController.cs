@@ -62,6 +62,7 @@ public class GameController : MonoBehaviour
         bp = BaseParameters.Instance;
         eh = EventHandler.Instance;
         diffusion_handler = FindObjectOfType<DiffusionReaction2DFrag>();
+        diffusion_handler.SelectedMode = DiffusionReaction2DFrag.SimulationModes.WormLike;
         ScaledTime.TimeScale = 0.0f;
         StartCoroutine(delayed_Draw());
     }
@@ -71,6 +72,7 @@ public class GameController : MonoBehaviour
         ScaledTime.TimeScale = 1.0f;
         diffusion_handler.ClearTexture();
         diffusion_handler.DrawCenter();
+        diffusion_handler.SelectedMode = DiffusionReaction2DFrag.SimulationModes.Coral;
         nc.SpawnNodes();
     }
 

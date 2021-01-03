@@ -32,7 +32,6 @@
             struct v2f
             {
                 float2 uv : TEXCOORD0;
-                UNITY_FOG_COORDS(1)
                 float4 vertex : SV_POSITION;
             };
 
@@ -50,8 +49,8 @@
             {
                 float2 pos = uv;
 
-                pos.x = mad(pos.x, _Domain.y - _Domain.x, _Domain.x);
-                pos.y = mad(pos.y, _Domain.w - _Domain.z, _Domain.z);
+                pos.x = (pos.x * (_Domain.y - _Domain.x)) +  _Domain.x;
+                pos.y = (pos.y *(_Domain.w - _Domain.z)) + _Domain.z;
                 return pos;
             }
 
@@ -93,7 +92,7 @@
                 return min_dist;
                 //return float4((pos + 4.5) / 9, 1, 1);
                 //return float4((p_uv + 4.5) / 9, 1, 1);
-                return  max(min_dist, _MaxDist);
+                //return  max(min_dist, _MaxDist);
             }
             ENDCG
         }

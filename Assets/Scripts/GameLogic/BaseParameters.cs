@@ -25,7 +25,7 @@ public class BaseParameters : MonoBehaviour
     public Vector2Int NodeSlotsRange = new Vector2Int(1, 3);
     public Vector2Int HPRange = new Vector2Int(100, 300);
 
-    public int MaxCorruptionMult = 3;
+    public float MaxCorruptionMult = 3;
 
     public Vector2Int CorruptionHPRange = new Vector2Int(100, 300);
     public Vector2Int CorruptingPowerRange = new Vector2Int(1, 3);
