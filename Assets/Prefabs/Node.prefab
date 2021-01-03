@@ -154,7 +154,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ui_handler: {fileID: 0}
   timer: 0
-  Delay: 3
 --- !u!65 &-4119511146571119949
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -166,5 +165,5 @@ BoxCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 0.16, y: 0.16, z: 0.2}
+  m_Size: {x: 0.5, y: 0.5, z: 0.2}
   m_Center: {x: 0, y: 0, z: 0}

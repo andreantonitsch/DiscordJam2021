@@ -5,33 +5,39 @@ using UnityEngine.EventSystems;
 
 public class NodeUITrigger : MonoBehaviour
     ,IPointerClickHandler // 2
-    ,IPointerEnterHandler
-    ,IPointerExitHandler
+    //,IPointerEnterHandler
+    //,IPointerExitHandler
 {
     public NodeUIHandler ui_handler;
 
     public float timer = 0.0f;
 
-    public float Delay = 3.0f;
+    //public float Delay = .3f;
     public void OnPointerClick(PointerEventData eventData)
     {
-        Debug.Log("Lock");
-        ui_handler.Lock();
-    }  
-
-    public void OnPointerEnter(PointerEventData eventData)
-    {
-        timer = Delay;
+        //Debug.Log("trigger");
         var n = eventData.pointerEnter.GetComponent<Node>();
         ui_handler.InjectData(n);
     }
 
-    public void OnPointerExit(PointerEventData eventData)
-    {
-        if (timer > 0.0f)
-            return;
-        ui_handler.MoveAway();
-    }
+    //public void OnPointerClick(PointerEventData eventData)
+    //{
+    //    ui_handler.Lock();
+    //}  
+
+    //public void OnPointerEnter(PointerEventData eventData)
+    //{
+    //    timer = Delay;
+    //    var n = eventData.pointerEnter.GetComponent<Node>();
+    //    ui_handler.InjectData(n);
+    //}
+
+    //public void OnPointerExit(PointerEventData eventData)
+    //{
+    //    if (timer > 0.0f)
+    //        return;
+    //    ui_handler.MoveAway();
+    //}
 
     // Start is called before the first frame update
     void Start()
@@ -39,8 +45,8 @@ public class NodeUITrigger : MonoBehaviour
         ui_handler = FindObjectOfType<NodeUIHandler>();
     }
 
-    void Update()
-    {
-        timer -= Time.deltaTime;
-    }
+    //void Update()
+    //{
+    //    timer -= Time.deltaTime;
+    //}
 }

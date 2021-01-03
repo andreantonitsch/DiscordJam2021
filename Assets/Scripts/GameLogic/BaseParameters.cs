@@ -62,6 +62,7 @@ public class BaseParameters : MonoBehaviour
     public float NodeAttackTick = 1.0f;
     public float UpdateDistTick = 0.1f;
     public float EnergyDrainTick = 0.1f;
+    public float PowerUpTick = 15.0f;
 
 }
 

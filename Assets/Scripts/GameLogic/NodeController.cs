@@ -49,6 +49,7 @@ public class NodeController : EventListener
         eh.Sub(Event.EventType.CorruptNode, this);
         eh.Sub(Event.EventType.NodeDestroyed, this);
         eh.Sub(Event.EventType.NodeChannel, this);
+        eh.Sub(Event.EventType.UpdatePowerUps, this);
         DisplayMaterial.SetFloat("_Channeling", 0.0f);
 
     }
@@ -122,7 +123,10 @@ public class NodeController : EventListener
 
     public void UpdatePowerUps()
     {
-
+        foreach (var item in null_parents)
+        {
+            item.PropagateUpdate();
+        }
     }
 
     public Node CreateNode(Vector2 pos, bool Corrupt = false)
@@ -173,36 +177,38 @@ public class NodeController : EventListener
 
         CorruptNodes.Remove(destroyed_node);
 
+        if (CorruptNodes.Count == 0 || RootNode == null)
+            FindObjectOfType<GameController>().Lose();
 
          Destroy(destroyed_node.gameObject);
 
     }
 
-    public Node ChannelingNode;
-    public void NodeChannel(Node n)
-    {
-        if (ChannelingNode != null)
-            UnsetChannel(ChannelingNode);
-        Debug.Log("Channel");
-        SetChannel(n);
+    //public Node ChannelingNode;
+    //public void NodeChannel(Node n)
+    //{
+    //    if (ChannelingNode != null)
+    //        UnsetChannel(ChannelingNode);
+    //    Debug.Log("Channel");
+    //    SetChannel(n);
 
-    }
+    //}
 
-    public void SetChannel(Node n)
-    {
-        n.Channeling = true;
-        ChannelingNode = n;
-        n.transform.localScale *= 1.5f;
-        DisplayMaterial.SetVector("_ChannelFocus", n.transform.position);
-        DisplayMaterial.SetFloat("_Channeling", 1.0f);
-    }    
+    //public void SetChannel(Node n)
+    //{
+    //    n.Channeling = true;
+    //    ChannelingNode = n;
+    //    n.transform.localScale *= 1.5f;
+    //    DisplayMaterial.SetVector("_ChannelFocus", n.transform.position);
+    //    DisplayMaterial.SetFloat("_Channeling", 1.0f);
+    //}    
 
-    public void UnsetChannel(Node n)
-    {
-       n.transform.localScale /= 1.2f;
-        DisplayMaterial.SetFloat("_Channeling", 0.0f);
-        n.Channeling = false;
-    }
+    //public void UnsetChannel(Node n)
+    //{
+    //   n.transform.localScale /= 1.2f;
+    //    DisplayMaterial.SetFloat("_Channeling", 0.0f);
+    //    n.Channeling = false;
+    //}
     
 
 
@@ -215,6 +221,9 @@ public class NodeController : EventListener
 
         CorruptNodes.Add(child);
 
+        if (CorruptNodes.Count == Nodes.Count)
+            FindObjectOfType<GameController>().Win();
+
     }
 
     public override void Consume(Event e)
@@ -225,20 +234,23 @@ public class NodeController : EventListener
             case Event.EventType.CorruptNode:
                 IDs.TryGetValue(e.i_val1, out Node parent);
                 IDs.TryGetValue(e.i_val2, out Node child);
-
                 CorruptNode(parent, child);
+
+                UpdatePowerUps();
                 break; 
             case Event.EventType.NodeDestroyed:
                 IDs.TryGetValue(e.i_val1, out Node destroyed_node);
                 CleanupNode(destroyed_node);
+
+                UpdatePowerUps();
                 break; 
             case Event.EventType.NodeRecaptured:
                 
                 break;
-            case Event.EventType.NodeChannel:
-                IDs.TryGetValue(e.i_val1, out Node Channel_node);
-                NodeChannel(Channel_node);
-                break;
+            //case Event.EventType.NodeChannel:
+            //    IDs.TryGetValue(e.i_val1, out Node Channel_node);
+            //    NodeChannel(Channel_node);
+            //    break;
             case Event.EventType.UpdatePowerUps:
                 UpdatePowerUps();
                 break;

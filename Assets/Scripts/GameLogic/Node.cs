@@ -38,10 +38,8 @@ public class Node : EventListener
     public BaseParameters bp;
     public NodeController nc;
 
-
-
-
     public int ID;
+
 
     public void Init()
     {
@@ -49,7 +47,6 @@ public class Node : EventListener
         bp = BaseParameters.Instance;
         nc = NodeController.Instance;
         eh = EventHandler.Instance;
-
 
         eh.Sub(Event.EventType.CorruptionTick, this);
     }
@@ -123,20 +120,39 @@ public class Node : EventListener
 
     }
 
-    public void PropagateUpdate()
+    public void PropagateUpdate(List<PowerUp> effective = null)
     {
+        EffectivePowerUps.Clear();
+        EffectivePowerUps.AddRange(OwnPowerUps);
 
+        foreach(var child in Children)
+        {
+            child.PropagateUpdate(EffectivePowerUps);
+        }
+
+        UpdateStats();
     }
 
 
     public void UpdateStats()
     {
         CurrentStats = new NodeStats(BaseStats);
+
+        foreach (var item in EffectivePowerUps)
+        {
+            if(item != null)
+                item.Apply(this);
+        }
     }
 
 
     public bool AttachPowerUp(PowerUp p)
     {
+        if(PowerUpSlots > OwnPowerUps.Count)
+        {
+            OwnPowerUps.Add(p);
+            return true;
+        }
         return false;
     }
 

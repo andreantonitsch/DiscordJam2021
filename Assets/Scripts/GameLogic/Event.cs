@@ -20,7 +20,8 @@ public class Event
         NodeRecaptured,
         NodeAttackTick,
         UpdatePowerUps,
-        NodeChannel
+        NodeChannel,
+        PowerUpTick
 
     }
 
