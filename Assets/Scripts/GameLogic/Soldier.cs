@@ -95,6 +95,9 @@ public class Soldier : EventListener
         if (Target == null)
             SetTarget();
 
+        if (Target == null)
+            return;
+
         FireTimer += ScaledTime.deltaTime;
         float target_dist = Vector2.Distance(Target.transform.position, transform.position);
         if (FireRate < FireTimer && bp.SoldierShootRadius > target_dist)

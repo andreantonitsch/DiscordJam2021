@@ -17,6 +17,7 @@ public class Event
         SoldierSpawnTick,
         SoldierActTick,
         NodeDestroyed,
+        NodeRecaptured,
         NodeAttackTick,
         UpdatePowerUps
 

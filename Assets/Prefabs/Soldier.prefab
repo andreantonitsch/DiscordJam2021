@@ -99,7 +99,7 @@ MonoBehaviour:
   nc: {fileID: 0}
   bp: {fileID: 0}
   eh: {fileID: 0}
-  BaseFireRate: 0.5
+  BaseFireRate: 1
   BaseDamage: 15
   BaseHP: 50
   FireRate: 0

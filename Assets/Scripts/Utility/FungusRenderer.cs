@@ -35,6 +35,7 @@ public class FungusRenderer : EventListener
         eh.Sub(Event.EventType.CorruptNode, this);
         eh.Sub(Event.EventType.UpdateDistanceFunction, this);
         eh.Sub(Event.EventType.NodesSpawned, this);
+        eh.Sub(Event.EventType.NodeDestroyed, this);
     }
 
     public RenderTexture InitializeTexture()
@@ -94,6 +95,10 @@ public class FungusRenderer : EventListener
     public void UpdateDistanceFunction()
     {
         var nc_list = nc.CorruptNodes;
+
+        if (nc_list.Count == 0)
+            return;
+
         float[] data = new float[nc_list.Count];
 
         for (int i = 0; i < data.Length; i++)
@@ -139,6 +144,10 @@ public class FungusRenderer : EventListener
             case Event.EventType.NodesSpawned:
                 GetDistanceFunction();
                 diffusion_handler.DrawCenter();
+                break; 
+            case Event.EventType.NodeDestroyed:
+                dirty_tree = true;
+                GetDistanceFunction(); ;
                 break;
             default:
                 break;

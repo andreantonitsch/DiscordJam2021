@@ -28,6 +28,7 @@ public class GameController : MonoBehaviour
     public float SoldierSpawnTimer = 0.0f;
     public float SoldierActTimer = 0.0f;
     public float NodeAttackTimer = 0.0f;
+    public float UpdateDistTimer = 0.0f;
 
 
 
@@ -50,6 +51,7 @@ public class GameController : MonoBehaviour
         SoldierSpawnTimer += ScaledTime.deltaTime;
         SoldierActTimer += ScaledTime.deltaTime;
         NodeAttackTimer += ScaledTime.deltaTime;
+        UpdateDistTimer += ScaledTime.deltaTime;
         
         if(CorruptionTimer > bp.CorruptionTick)
         {
@@ -76,6 +78,12 @@ public class GameController : MonoBehaviour
         {
             eh.Push(new Event(Event.EventType.NodeAttackTick));
             NodeAttackTimer = 0.0f;
+        }
+        if (UpdateDistTimer > bp.UpdateDistTick)
+        {
+            if(nc.Nodes.Count >0)
+                eh.Push(new Event(Event.EventType.UpdateDistanceFunction));
+            UpdateDistTimer = 0.0f;
         }
 
 

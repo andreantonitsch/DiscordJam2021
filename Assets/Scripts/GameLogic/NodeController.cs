@@ -143,13 +143,23 @@ public class NodeController : EventListener
 
     public void CleanupNode(Node destroyed_node)
     {
+        if (destroyed_node == null)
+            return;
         foreach (var n in destroyed_node.Children)
         {
+            if (n == null)
+                continue;
+
             n.Parent = null;
             null_parents.Add(n);
-
         }
-        destroyed_node.Parent.Neighbors.Remove(destroyed_node);
+
+        foreach(var n in Nodes)
+        {
+            n.Neighbors.Remove(destroyed_node);
+        }
+        if (destroyed_node.Parent != null)
+            destroyed_node.Parent.Children.Remove(destroyed_node);
 
         IDs.Remove(destroyed_node.ID);
         Nodes.Remove(destroyed_node);
@@ -188,6 +198,9 @@ public class NodeController : EventListener
             case Event.EventType.NodeDestroyed:
                 IDs.TryGetValue(e.i_val1, out Node destroyed_node);
                 CleanupNode(destroyed_node);
+                break; 
+            case Event.EventType.NodeRecaptured:
+                
                 break;
             case Event.EventType.UpdatePowerUps:
                 UpdatePowerUps();

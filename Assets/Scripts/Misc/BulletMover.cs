@@ -12,7 +12,10 @@ public class BulletMover : MonoBehaviour
     void Update()
     {
         if (target == null)
+        {
             ObjectPool.Despawn(this.gameObject);
+            return;
+        }
 
         if (Vector3.SqrMagnitude(target.position - transform.position) < MinDistance)
             ObjectPool.Despawn(this.gameObject);
