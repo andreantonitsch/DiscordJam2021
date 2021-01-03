@@ -19,7 +19,8 @@ public class Event
         NodeDestroyed,
         NodeRecaptured,
         NodeAttackTick,
-        UpdatePowerUps
+        UpdatePowerUps,
+        NodeChannel
 
     }
 
@@ -38,7 +39,5 @@ public class Event
     public override string ToString()
     {
         return $"{Type},{s_val},{f_val1},{f_val2},{i_val1},{i_val2}";
-        return base.ToString();
-
     }
 }

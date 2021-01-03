@@ -9,6 +9,7 @@ public class Node : EventListener
     public bool DrawChildren = true;
     #endregion
 
+
     public GameObject SoldierPrefab;
     public GameObject NodeBullletPrefab;
     public List<Node> Neighbors = new List<Node>();
@@ -18,6 +19,9 @@ public class Node : EventListener
 
     public int SoldierSpawnTimer;
     public float Corruption;
+
+    public float Energy;
+
     public float Damage;
     public bool Free = true;
 
@@ -47,10 +51,11 @@ public class Node : EventListener
         eh = EventHandler.Instance;
 
 
-
         eh.Sub(Event.EventType.CorruptionTick, this);
     }
 
+
+    public bool Channeling = false;
 
     public void AbsorbCorruption()
     {
@@ -84,6 +89,7 @@ public class Node : EventListener
             CorruptionEvent(parent, this);
         }
     }
+
 
     public void CorruptionEvent(Node parent, Node child)
     {

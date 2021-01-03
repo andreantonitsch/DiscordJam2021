@@ -21,6 +21,7 @@ public class NodeController : EventListener
 
     public Material FreeCityMaterial;
     public Material CorruptCityMaterial;
+    public Material DisplayMaterial;
 
     public Dictionary<int, Node> IDs;
     public List<Node> Nodes;
@@ -47,6 +48,9 @@ public class NodeController : EventListener
 
         eh.Sub(Event.EventType.CorruptNode, this);
         eh.Sub(Event.EventType.NodeDestroyed, this);
+        eh.Sub(Event.EventType.NodeChannel, this);
+        DisplayMaterial.SetFloat("_Channeling", 0.0f);
+
     }
 
 
@@ -104,6 +108,7 @@ public class NodeController : EventListener
         n.transform.position = new Vector3(position.x, position.y, n.transform.position.z);
         n.transform.parent = NodeHolder;
         n.PowerUpSlots = Random.Range(bp.NodeSlotsRange.x, bp.NodeSlotsRange.y);
+        n.Energy = Random.Range(bp.EnergyRange.x, bp.EnergyRange.y);
 
         if (Corrupt)
         {
@@ -173,6 +178,34 @@ public class NodeController : EventListener
 
     }
 
+    public Node ChannelingNode;
+    public void NodeChannel(Node n)
+    {
+        if (ChannelingNode != null)
+            UnsetChannel(ChannelingNode);
+        Debug.Log("Channel");
+        SetChannel(n);
+
+    }
+
+    public void SetChannel(Node n)
+    {
+        n.Channeling = true;
+        ChannelingNode = n;
+        n.transform.localScale *= 1.5f;
+        DisplayMaterial.SetVector("_ChannelFocus", n.transform.position);
+        DisplayMaterial.SetFloat("_Channeling", 1.0f);
+    }    
+
+    public void UnsetChannel(Node n)
+    {
+       n.transform.localScale /= 1.2f;
+        DisplayMaterial.SetFloat("_Channeling", 0.0f);
+        n.Channeling = false;
+    }
+    
+
+
     public void CorruptNode(Node parent, Node child)
     {
         child.GetComponent<SpriteRenderer>().material = CorruptCityMaterial;
@@ -201,6 +234,10 @@ public class NodeController : EventListener
                 break; 
             case Event.EventType.NodeRecaptured:
                 
+                break;
+            case Event.EventType.NodeChannel:
+                IDs.TryGetValue(e.i_val1, out Node Channel_node);
+                NodeChannel(Channel_node);
                 break;
             case Event.EventType.UpdatePowerUps:
                 UpdatePowerUps();

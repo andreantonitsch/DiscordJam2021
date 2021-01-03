@@ -15,7 +15,6 @@ public class NodeStats
     public float AttackPower;
     public float AttackRate;
     public float AttackRange;
-    public float Energy;
 
     public NodeStats() {    }
 

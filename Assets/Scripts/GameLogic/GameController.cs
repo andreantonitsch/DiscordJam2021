@@ -29,6 +29,7 @@ public class GameController : MonoBehaviour
     public float SoldierActTimer = 0.0f;
     public float NodeAttackTimer = 0.0f;
     public float UpdateDistTimer = 0.0f;
+    public float EnergyDrainTimer = 0.0f;
 
 
 
@@ -52,6 +53,7 @@ public class GameController : MonoBehaviour
         SoldierActTimer += ScaledTime.deltaTime;
         NodeAttackTimer += ScaledTime.deltaTime;
         UpdateDistTimer += ScaledTime.deltaTime;
+        //EnergyDrainTimer += ScaledTime.deltaTime;
         
         if(CorruptionTimer > bp.CorruptionTick)
         {
