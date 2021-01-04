@@ -501,7 +501,7 @@ MonoBehaviour:
   NeighborDistance: 1.5
   CorruptionTick: 0.5
   SoldierSpawnTick: 4
-  SoldierActTick: 0.7
+  SoldierActTick: 0.2
   NodeAttackTick: 0.1
   UpdateDistTick: 0.1
   EnergyDrainTick: 0.1

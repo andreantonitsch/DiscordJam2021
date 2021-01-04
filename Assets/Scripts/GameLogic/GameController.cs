@@ -140,12 +140,12 @@ public class GameController : MonoBehaviour
 
     public void GameTick()
     {
-        CorruptionTimer += ScaledTime.deltaTime;
-        SoldierSpawnTimer += ScaledTime.deltaTime;
-        SoldierActTimer += ScaledTime.deltaTime;
-        NodeAttackTimer += ScaledTime.deltaTime;
-        UpdateDistTimer += ScaledTime.deltaTime;
-        PowerUpTimer += ScaledTime.deltaTime;
+        CorruptionTimer += ScaledTime.fixedDeltaTime;
+        SoldierSpawnTimer += ScaledTime.fixedDeltaTime;
+        SoldierActTimer += ScaledTime.fixedDeltaTime;
+        NodeAttackTimer += ScaledTime.fixedDeltaTime;
+        UpdateDistTimer += ScaledTime.fixedDeltaTime;
+        PowerUpTimer += ScaledTime.fixedDeltaTime;
 
         if (CorruptionTimer > bp.CorruptionTick)
         {
@@ -186,7 +186,7 @@ public class GameController : MonoBehaviour
             PowerUpTimer = 0.0f;
         }
     }
-        public void Update()
+        public void FixedUpdate()
         {
             GameTick();
         }

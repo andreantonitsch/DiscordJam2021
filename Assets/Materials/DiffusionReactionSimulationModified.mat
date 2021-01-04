@@ -66,11 +66,11 @@ Material:
     - _DELTATIME: 1
     - _DetailNormalMapScale: 1
     - _DstBlend: 0
-    - _F: 0.0416
+    - _F: 0.055
     - _GlossMapScale: 1
     - _Glossiness: 0.5
     - _GlossyReflections: 1
-    - _K: 0.0625
+    - _K: 0.062
     - _Metallic: 0
     - _Mode: 0
     - _OcclusionStrength: 1
