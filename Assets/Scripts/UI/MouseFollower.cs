@@ -11,6 +11,6 @@ public class MouseFollower : MonoBehaviour
 
     public void Update()
     {
-        rect.anchoredPosition = Input.mousePosition + Offset;
+        rect.position = Input.mousePosition + Offset;
     }
 }

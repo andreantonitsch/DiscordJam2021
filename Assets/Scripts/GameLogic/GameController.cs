@@ -43,12 +43,13 @@ public class GameController : MonoBehaviour
     public enum State
     {
         Paused,
+        Menu,
         Game
         
     }
 
-    public State state = State.Game;
-
+    public State state = State.Menu;
+    public State menu_state = State.Menu;
     public IEnumerator delayed_Draw()
     {
         yield return new WaitForSeconds(1);
@@ -63,6 +64,8 @@ public class GameController : MonoBehaviour
         eh = EventHandler.Instance;
         diffusion_handler = FindObjectOfType<DiffusionReaction2DFrag>();
         diffusion_handler.SelectedMode = DiffusionReaction2DFrag.SimulationModes.WormLike;
+        diffusion_handler.SimulationShader = diffusion_handler.SimulationShaderTitle;
+        ObjectPool.ClearPools();
         ScaledTime.TimeScale = 0.0f;
         StartCoroutine(delayed_Draw());
     }
@@ -70,11 +73,18 @@ public class GameController : MonoBehaviour
     public void BeginSimulation()
     {
         ScaledTime.TimeScale = 1.0f;
-        diffusion_handler.ClearTexture();
-        diffusion_handler.DrawCenter();
         diffusion_handler.SelectedMode = DiffusionReaction2DFrag.SimulationModes.Coral;
+        diffusion_handler.SimulationShader = diffusion_handler.SimulationShaderGame;
+        menu_state = State.Game;
+        diffusion_handler.InitializeTextures();
+        diffusion_handler.DrawCenter();
         nc.SpawnNodes();
+
     }
+
+    public void LowDifficulty() { bp.SoldierSpawnTick = 8; }
+    public void MedDifficulty() { bp.SoldierSpawnTick = 6; }
+    public void HiDifficulty() { bp.SoldierSpawnTick = 4; }
 
     public void Restart()
     {
@@ -98,8 +108,11 @@ public class GameController : MonoBehaviour
         else
         {
             IntroPause.SetActive(false);
-            ScaledTime.TimeScale = 1.0f;
-            state = State.Game;
+            if(menu_state != State.Menu)
+            {
+                ScaledTime.TimeScale = 1.0f;
+                state = State.Game;
+            }
         }
     }
 
@@ -173,12 +186,12 @@ public class GameController : MonoBehaviour
             eh.Push(new Event(Event.EventType.NodeAttackTick));
             NodeAttackTimer = 0.0f;
         }
-        if (UpdateDistTimer > bp.UpdateDistTick)
-        {
-            if (nc.Nodes.Count > 0)
-                eh.Push(new Event(Event.EventType.UpdateDistanceFunction));
-            UpdateDistTimer = 0.0f;
-        }
+        //if (UpdateDistTimer > bp.UpdateDistTick)
+        //{
+        //    if (nc.Nodes.Count > 0)
+        //        eh.Push(new Event(Event.EventType.UpdateDistanceFunction));
+        //    UpdateDistTimer = 0.0f;
+        //}
 
         if (PowerUpTimer > bp.PowerUpTick)
         {

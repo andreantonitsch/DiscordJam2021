@@ -6,6 +6,7 @@
         _MaxDist("Maximum Distance", Float) = 1.0
         _DistFalloff ("Distance Falloff", Float) = 1.0
         _Domain ("Domain", Vector) = (0,0,1,1)
+        _Offset ("Offset", Vector) = (0,0,1,1)
         _ArrayLength ("Array Length", Int) = 120
     }
     SubShader
@@ -43,14 +44,15 @@
             sampler2D _MainTex;
             float4 _MainTex_ST;
             float4 _Domain;
+            float2 _Offset;
 
 
             float2 uv2world(float2 uv) 
             {
                 float2 pos = uv;
 
-                pos.x = (pos.x * (_Domain.y - _Domain.x)) +  _Domain.x;
-                pos.y = (pos.y *(_Domain.w - _Domain.z)) + _Domain.z;
+                pos.x = (pos.x * (_Domain.y - _Domain.x)) +  _Domain.x + _Offset.x;
+                pos.y = (pos.y *(_Domain.w - _Domain.z)) + _Domain.z + _Offset.y;
                 return pos;
             }
 

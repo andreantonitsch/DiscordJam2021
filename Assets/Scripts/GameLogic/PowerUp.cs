@@ -36,6 +36,7 @@ public class PowerUp : MonoBehaviour
 
     public void Attach_Attachments(Node n)
     {
+        Debug.Log("Attachment Trigger");
         var o = Instantiate(AttachmentPrefab);
         o.transform.parent = n.transform;
         o.GetComponent<AttachmentAnimator>().Target = n.transform;

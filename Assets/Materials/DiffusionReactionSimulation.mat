@@ -57,9 +57,9 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Floats:
     - _BumpScale: 1
-    - _COLS: 1024
+    - _COLS: 256
     - _Cutoff: 0.5
-    - _DELTATIME: 0.5
+    - _DELTATIME: 1
     - _DetailNormalMapScale: 1
     - _DstBlend: 0
     - _F: 0.0416
@@ -71,7 +71,7 @@ Material:
     - _Mode: 0
     - _OcclusionStrength: 1
     - _Parallax: 0.02
-    - _ROWS: 1024
+    - _ROWS: 256
     - _SmoothnessTextureChannel: 0
     - _SpecularHighlights: 1
     - _SrcBlend: 1

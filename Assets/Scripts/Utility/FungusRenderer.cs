@@ -25,6 +25,10 @@ public class FungusRenderer : EventListener
 
     public bool dirty_tree = true;
 
+
+    public int Rows;
+    public int Cols;
+
     public void Start()
     {
         diffusion_handler = Component.FindObjectOfType<DiffusionReaction2DFrag>() as DiffusionReaction2DFrag;
@@ -40,7 +44,7 @@ public class FungusRenderer : EventListener
 
     public RenderTexture InitializeTexture()
     {
-        var tex = new RenderTexture(1024, 1024, 0, RenderTextureFormat.ARGBFloat);
+        var tex = new RenderTexture(Cols, Rows, 0, RenderTextureFormat.ARGBFloat);
         tex.wrapMode = TextureWrapMode.Clamp;
         tex.Create();
 
@@ -67,6 +71,7 @@ public class FungusRenderer : EventListener
             distance_tex = InitializeTexture();
 
         distance_function_mat.SetVector("_Domain", bp.Domain);
+        //distance_function_mat.SetVector("_Offset", bp.Offset);
 
         var nc_list = nc.CorruptNodes;
         float[] pos = new float[MaxEstimatedNodes * 2]; 
@@ -75,6 +80,7 @@ public class FungusRenderer : EventListener
         for (int i = 0; i < nc_list.Count; i++)
         {
             var n = nc_list[i];
+
             pos[i * 2] = n.transform.position.x;
             pos[i * 2 + 1] = n.transform.position.y;
             data[i] = n.Corruption / n.BaseStats.CorruptionHP;
@@ -104,6 +110,7 @@ public class FungusRenderer : EventListener
         for (int i = 0; i < data.Length; i++)
         {
             var n = nc_list[i];
+
             data[i] = n.Corruption / n.BaseStats.CorruptionHP;
         }
 
@@ -125,6 +132,17 @@ public class FungusRenderer : EventListener
         DisposeDistanceTex();
     }
 
+
+    public void SetTextureResolution(int r, int c)
+    {
+        DisposeDistanceTex();
+        Rows = r;
+        Cols = c;
+        dirty_tree = true;
+        GetDistanceFunction();
+
+    }
+
     public void Update()
     {
         diffusion_handler.Step();
@@ -142,6 +160,7 @@ public class FungusRenderer : EventListener
                 GetDistanceFunction();
                 break;
             case Event.EventType.NodesSpawned:
+                dirty_tree = true;
                 GetDistanceFunction();
                 diffusion_handler.DrawCenter();
                 break; 

@@ -34,7 +34,7 @@ public class Soldier : EventListener
         float free_cities = total - nc.CorruptNodes.Count;
 
         float scale = 1 - (free_cities / total );
-        float strength = node_stats.SpawnStrength * bp.SoldierBaseScaling * scale ;
+        float strength = node_stats.SpawnStrength * bp.SoldierBaseScaling * scale  * ( 8 / (ActiveSoldiers.Count+1) );
 
         FireRate = BaseFireRate;
         Damage = BaseDamage * strength;

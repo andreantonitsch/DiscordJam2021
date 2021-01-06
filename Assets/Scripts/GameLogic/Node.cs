@@ -141,7 +141,17 @@ public class Node : EventListener
         foreach (var item in EffectivePowerUps)
         {
             if(item != null)
-                item.Apply(this);
+            {
+                if (OwnPowerUps.Contains(item)){
+                    item.Apply(this);
+                    item.Apply(this);
+                    item.Apply(this);
+                }else
+                {
+                    item.Apply(this);
+                }
+                
+            }
         }
     }
 

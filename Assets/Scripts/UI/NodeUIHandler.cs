@@ -33,37 +33,7 @@ public class NodeUIHandler : MonoBehaviour
     {
         eh = EventHandler.Instance;
     }
-    //public void Update()
-    //{
-    //    timer -= Time.deltaTime;
-    //    if(timer < 0.0f)
-    //    {
-    //        Unlock();
-    //    }
-    //}
-
-    //public void Unlock()
-    //{
-    //    Locked = false;
-    //    follower.enabled = true;
-        
-    //}
-
-
-    //public void Lock()
-    //{
-    //    Locked = true;
-    //    timer = LockTimer;
-    //    follower.enabled = false;
-
-    //}
-
-
-    //public void MoveAway()
-    //{ 
-    //    if(!Locked)
-    //        NodeTooltip.SetActive(false);
-    //}
+    
 
     public void SetSlots(Node n)
     {
@@ -129,6 +99,10 @@ public class NodeUIHandler : MonoBehaviour
 
     }
 
+    public void AddPowerUp(Node n)
+    {
+
+    }
 
     //public void TriggerEnergyChannel()
     //{

@@ -9,6 +9,7 @@ public class NodeUITrigger : MonoBehaviour
     //,IPointerExitHandler
 {
     public NodeUIHandler ui_handler;
+    public PowerUpUIHandler pu_handler;
 
     public float timer = 0.0f;
 
@@ -17,36 +18,15 @@ public class NodeUITrigger : MonoBehaviour
     {
         //Debug.Log("trigger");
         var n = eventData.pointerEnter.GetComponent<Node>();
-        ui_handler.InjectData(n);
+        pu_handler.ApplyPowerUp(n);
     }
 
-    //public void OnPointerClick(PointerEventData eventData)
-    //{
-    //    ui_handler.Lock();
-    //}  
-
-    //public void OnPointerEnter(PointerEventData eventData)
-    //{
-    //    timer = Delay;
-    //    var n = eventData.pointerEnter.GetComponent<Node>();
-    //    ui_handler.InjectData(n);
-    //}
-
-    //public void OnPointerExit(PointerEventData eventData)
-    //{
-    //    if (timer > 0.0f)
-    //        return;
-    //    ui_handler.MoveAway();
-    //}
 
     // Start is called before the first frame update
     void Start()
     {
         ui_handler = FindObjectOfType<NodeUIHandler>();
+        pu_handler = FindObjectOfType<PowerUpUIHandler>();
     }
 
-    //void Update()
-    //{
-    //    timer -= Time.deltaTime;
-    //}
 }

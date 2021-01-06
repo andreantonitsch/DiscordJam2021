@@ -12,7 +12,6 @@ public class PowerUpUIHandler : EventListener
     public RectTransform ActivePowerUpHolder;
 
     public EventHandler eh;
-    public NodeUIHandler n_ui;
     public PowerUp SelectedPowerUp;
     private int MaxPowerUPs = 10;
     
@@ -20,7 +19,7 @@ public class PowerUpUIHandler : EventListener
     {
         eh = EventHandler.Instance;
 
-        n_ui = FindObjectOfType<NodeUIHandler>();
+        //n_ui = FindObjectOfType<NodeUIHandler>();
 
         eh.Sub(Event.EventType.PowerUpTick, this);
     }
@@ -71,14 +70,36 @@ public class PowerUpUIHandler : EventListener
 
     }
 
-    public void ApplyPowerUp(BaseEventData eventData)
-    {
-        //Debug.Log("Apply Power Up");
-        if (n_ui.displayed_node == null)
-            return;
+    //public void ApplyPowerUp(BaseEventData eventData)
+    //{
+    //    //Debug.Log("Apply Power Up");
+    //    if (n_ui.displayed_node == null)
+    //        return;
 
-        var target_node = n_ui.displayed_node;
-        if(target_node.PowerUpSlots - target_node.OwnPowerUps.Count  == 0)
+    //    var target_node = n_ui.displayed_node;
+    //    if(target_node.PowerUpSlots - target_node.OwnPowerUps.Count  == 0)
+    //        return;
+    //    selection_highlight.gameObject.SetActive(false);
+
+    //    var p_up = SelectedPowerUp;
+    //    SelectedPowerUp = null;
+
+    //    bool attached = target_node.AttachPowerUp(p_up);
+
+    //    if (attached)
+    //    {
+    //        n_ui.InjectData(target_node);
+    //        p_up.Attach_Attachments(target_node);
+    //    }
+
+    //    eh.Push(new Event(Event.EventType.UpdatePowerUps));
+    //}
+
+    public void ApplyPowerUp(Node n)
+    {
+
+        var target_node = n;
+        if (target_node.PowerUpSlots - target_node.OwnPowerUps.Count == 0)
             return;
         selection_highlight.gameObject.SetActive(false);
 
@@ -89,13 +110,11 @@ public class PowerUpUIHandler : EventListener
 
         if (attached)
         {
-            n_ui.InjectData(target_node);
             p_up.Attach_Attachments(target_node);
         }
 
         eh.Push(new Event(Event.EventType.UpdatePowerUps));
     }
-
 
     public override void Consume(Event e)
     {

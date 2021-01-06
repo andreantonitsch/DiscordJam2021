@@ -18,9 +18,7 @@ public class BaseParameters : MonoBehaviour
     }
 
     public Vector4 Domain;
-
-
-    public float TickTime = 1.0f;
+    public Vector2 Offset;
 
     public Vector2Int NodeSlotsRange = new Vector2Int(1, 3);
     public Vector2Int HPRange = new Vector2Int(100, 300);

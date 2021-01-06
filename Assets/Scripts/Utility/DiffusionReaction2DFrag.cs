@@ -43,6 +43,8 @@ public class DiffusionReaction2DFrag : MonoBehaviour
 
     public Material visualization_mat;
     public Material SimulationShader;
+    public Material SimulationShaderTitle;
+    public Material SimulationShaderGame;
     public Material DrawShader;
     public Material ClearShader;
 
@@ -221,6 +223,21 @@ public class DiffusionReaction2DFrag : MonoBehaviour
         SwapBuffers();
     }
 
+    public void InitializeTextures()
+    {
+        _qBuffer0 = InitializeTexture();
+        _qBuffer1 = InitializeTexture();
+
+        if (!empty_canvas)
+            if (random)
+                AreaInitializer(random);
+            else
+                AreaInitializer();
+
+
+        visualization_mat.SetTexture("_Q", _qBuffer0);
+    }
+
     // Start is called before the first frame update
     void Start()
     {
@@ -228,17 +245,7 @@ public class DiffusionReaction2DFrag : MonoBehaviour
 
         SetProperties();
 
-        _qBuffer0 = InitializeTexture();
-        _qBuffer1 = InitializeTexture();
-
-        if(!empty_canvas)
-            if(random)
-                AreaInitializer(random);
-            else
-                AreaInitializer();
-
-
-        visualization_mat.SetTexture("_Q", _qBuffer0);
+        InitializeTextures();
     }
 
     public void DrawCenter()

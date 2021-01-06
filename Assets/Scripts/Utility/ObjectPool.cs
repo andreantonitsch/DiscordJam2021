@@ -66,6 +66,7 @@ public static class ObjectPool
 		{
 			this.prefab = prefab;
 			parent = new GameObject(prefab.name + "_pool");
+
 			// If Stack uses a linked list internally, then this
 			// whole initialQty thing is a placebo that we could
 			// strip out for more minimal code. But it can't *hurt*.
@@ -214,4 +215,10 @@ public static class ObjectPool
 		}
 	}
 
+
+	static public void ClearPools()
+	{
+		if(pools != null)
+			pools.Clear();
+	}
 }
